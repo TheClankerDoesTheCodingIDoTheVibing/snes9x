@@ -390,7 +390,7 @@ struct SJoypad {
     WORD R;
 };
 
-#define S9X_JOY_NEUTRAL 60
+#define S9X_JOY_NEUTRAL 0
 
 struct SJoyState{
     bool Attached;
