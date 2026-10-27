@@ -1,0 +1,35 @@
+name: Build modified Snes9x
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+
+    steps:
+      - name: Download source and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build Snes9x x64
+        shell: pwsh
+        run: |
+          msbuild .\win32\snes9xw.sln /m /t:Build '/p:Configuration=Release Unicode' /p:Platform=x64
+
+      - name: Find executable
+        shell: pwsh
+        run: |
+          Get-ChildItem .\win32 -Recurse -Filter snes9x*.exe |
+            Select-Object FullName, Length
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: modified-snes9x-windows
+          path: win32/**/*.exe
+          if-no-files-found: error
