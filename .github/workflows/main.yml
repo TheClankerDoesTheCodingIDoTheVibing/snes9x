@@ -16,6 +16,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Build Snes9x x64
         shell: pwsh
         run: |
